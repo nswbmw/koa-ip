@@ -1,0 +1,21 @@
+{
+  "name": "koa-ip",
+  "version": "0.1.0",
+  "description": "Ip filter middleware for koa, support whitelist and blacklist.",
+  "main": "index.js",
+  "author": "nswbmw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MangroveTech/koa-ip"
+  },
+  "keywords": [
+    "koa",
+    "ip",
+    "whitelist",
+    "blacklist"
+  ],
+  "dependencies": {
+    "debug": "^1.0.4"
+  }
+}
