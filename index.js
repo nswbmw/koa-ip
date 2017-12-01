@@ -1,38 +1,38 @@
-var debug = require('debug')('koa-ip');
+const assert = require('assert')
+const _ = require('lodash')
+const debug = require('debug')('koa-ip')
 
-module.exports = ip;
+module.exports = function (opts) {
+  assert(opts, 'koa-ip missing opts')
+  if (!_.isPlainObject(opts)) {
+    opts = { whitelist: _.isArray(opts) ? opts : [opts] }
+  }
 
-function ip(conf) {
-  if (typeof conf !== 'object') {
-    if (typeof conf === 'string') {
-      conf = {whiteList: [conf]};
-    } else {
-      conf = {};
-    }
-  }
-  if (Array.isArray(conf)) {
-    conf = {whiteList: conf};
-  }
-  return function* (next) {
-    var _ip = this.ip;
-    var pass = false;
-    if (conf.whiteList && Array.isArray(conf.whiteList)) {
-      pass = conf.whiteList.some(function (item) {
-        return RegExp(item).test(_ip);
-      });
+  return async function koaIp (ctx, next) {
+    const ip = ctx.ip
+    let pass = false
+    if (opts.whitelist && _.isArray(opts.whitelist)) {
+      pass = opts.whitelist.some((item) => {
+        return RegExp(item).test(ip)
+      })
     }
 
-    if (conf.blackList && Array.isArray(conf.blackList)) {
-      pass = !conf.blackList.some(function (item) {
-        return RegExp(item).test(_ip);
-      });
+    if (pass && opts.blacklist && _.isArray(opts.blacklist)) {
+      pass = !opts.blacklist.some((item) => {
+        return RegExp(item).test(ip)
+      })
     }
 
     if (pass) {
-      debug((new Date).toUTCString() + ' ' + _ip + ' -> ✓');
-      yield next;
+      debug(`${new Date()}: "${ip} -> ✓"`)
+      return next()
     } else {
-      debug((new Date).toUTCString() + ' ' + _ip + ' -> ×');
+      if (typeof opts.handler === 'function') {
+        debug(`${new Date()}: "${ip} -> handler"`)
+        await Promise.resolve(opts.handler(ctx))
+      } else {
+        debug(`${new Date()}: "${ip} -> ×"`)
+      }
     }
   }
 }

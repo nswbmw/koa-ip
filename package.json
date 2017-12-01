@@ -1,13 +1,16 @@
 {
   "name": "koa-ip",
-  "version": "0.1.0",
-  "description": "Ip filter middleware for koa, support whitelist and blacklist.",
+  "version": "1.0.0",
+  "description": "Ip filter middleware for koa, support `whitelist` and `blacklist`.",
   "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
   "author": "nswbmw",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MangroveTech/koa-ip"
+    "url": "https://github.com/nswbmw/koa-ip"
   },
   "keywords": [
     "koa",
@@ -16,6 +19,17 @@
     "blacklist"
   ],
   "dependencies": {
-    "debug": "^1.0.4"
+    "debug": "3.1.0",
+    "lodash": "4.17.4"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-standard": "3.0.1",
+    "koa": "2.4.1",
+    "mocha": "4.0.1",
+    "supertest": "3.0.0"
   }
 }
