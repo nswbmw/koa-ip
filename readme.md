@@ -8,6 +8,8 @@
 
 ```sh
 $ npm i koa-ip --save
+or 
+$ yarn add koa-ip
 ```
 
 ### Usage
@@ -68,6 +70,8 @@ More examples see [test](./test.js).
 
 ```sh
 $ npm test
+or
+$ yarn test
 ```
 
 ### License

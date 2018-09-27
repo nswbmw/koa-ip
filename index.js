@@ -1,25 +1,25 @@
 const assert = require('assert')
-const _ = require('lodash')
+const isPlainObject = require('lodash.isplainobject')
 const debug = require('debug')('koa-ip')
 
 module.exports = function (opts) {
   assert(opts, 'koa-ip missing opts')
-  if (!_.isPlainObject(opts)) {
-    opts = { whitelist: _.isArray(opts) ? opts : [opts] }
+  if (!isPlainObject(opts)) {
+    opts = { whitelist: Array.isArray(opts) ? opts : [opts] }
   }
 
   return async function koaIp (ctx, next) {
     const ip = ctx.ip
     let pass = false
-    if (opts.whitelist && _.isArray(opts.whitelist)) {
+    if (opts.whitelist && Array.isArray(opts.whitelist)) {
       pass = opts.whitelist.some((item) => {
-        return RegExp(item).test(ip)
+        return new RegExp(item).test(ip)
       })
     }
 
-    if (pass && opts.blacklist && _.isArray(opts.blacklist)) {
+    if (pass && opts.blacklist && Array.isArray(opts.blacklist)) {
       pass = !opts.blacklist.some((item) => {
-        return RegExp(item).test(ip)
+        return new RegExp(item).test(ip)
       })
     }
 
