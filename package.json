@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "debug": "3.1.0",
-    "lodash": "4.17.4"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "eslint-config-standard": "10.2.1",
