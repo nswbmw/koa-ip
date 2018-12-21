@@ -10,7 +10,8 @@ module.exports = function (opts) {
 
   return async function koaIp (ctx, next) {
     const ip = ctx.ip
-    let pass = false
+    let pass = true
+
     if (opts.whitelist && Array.isArray(opts.whitelist)) {
       pass = opts.whitelist.some((item) => {
         return new RegExp(item).test(ip)
@@ -23,16 +24,19 @@ module.exports = function (opts) {
       })
     }
 
+    // pass
     if (pass) {
       debug(`${new Date()}: "${ip} -> ✓"`)
       return next()
+    }
+
+    // not pass
+    if (typeof opts.handler === 'function') {
+      debug(`${new Date()}: "${ip} -> handler"`)
+      await opts.handler(ctx, next)
     } else {
-      if (typeof opts.handler === 'function') {
-        debug(`${new Date()}: "${ip} -> handler"`)
-        await Promise.resolve(opts.handler(ctx))
-      } else {
-        debug(`${new Date()}: "${ip} -> ×"`)
-      }
+      debug(`${new Date()}: "${ip} -> ×"`)
+      ctx.throw(403)
     }
   }
 }

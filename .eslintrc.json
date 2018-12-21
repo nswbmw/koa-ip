@@ -1,7 +1,4 @@
 {
   "extends": "standard",
-  "globals": {
-    "describe": true,
-    "it": true
-  }
+  "plugins": ["jest"]
 }

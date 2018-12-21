@@ -1,23 +1,20 @@
 const request = require('supertest')
 const Koa = require('koa')
-const ip = require('./')
+const ip = require('..')
 
 describe('koa-ip', () => {
-  it('paramters error', (done) => {
+  it('paramters error', async () => {
     const app = new Koa()
-
+    let error
     try {
       app.use(ip())
     } catch (e) {
-      if (e.message === 'koa-ip missing opts') {
-        done()
-      } else {
-        done(e)
-      }
+      error = e
     }
+    expect(error.message).toBe('koa-ip missing opts')
   })
 
-  it('string success', (done) => {
+  it('string success', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.0.1'
@@ -28,13 +25,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(200)
-      .end(done())
+    await request(app.callback()).get('/').expect(200)
   })
 
-  it('string failed', (done) => {
+  it('string failed', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.1.1'
@@ -45,13 +39,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(404)
-      .end(done())
+    await request(app.callback()).get('/').expect(403)
   })
 
-  it('array success', (done) => {
+  it('array success', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.1.1'
@@ -62,13 +53,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(200)
-      .end(done())
+    await request(app.callback()).get('/').expect(200)
   })
 
-  it('array failed', (done) => {
+  it('array failed', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.1.1'
@@ -79,13 +67,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(404)
-      .end(done())
+    await request(app.callback()).get('/').expect(403)
   })
 
-  it('object success', (done) => {
+  it('object success', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.0.1'
@@ -98,13 +83,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(200)
-      .end(done())
+    await request(app.callback()).get('/').expect(200)
   })
 
-  it('object failed', (done) => {
+  it('object failed', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.0.1'
@@ -118,13 +100,10 @@ describe('koa-ip', () => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(404)
-      .end(done())
+    await request(app.callback()).get('/').expect(403)
   })
 
-  it('handler', (done) => {
+  it('blacklist handler', async () => {
     const app = new Koa()
     app.use((ctx, next) => {
       ctx.request.ip = '192.168.0.1'
@@ -134,15 +113,37 @@ describe('koa-ip', () => {
       blacklist: ['192.168.0.[1-9]'],
       handler: async (ctx) => {
         ctx.status = 403
+        ctx.body = 'Forbidden!!!'
       }
     }))
     app.use((ctx, next) => {
       ctx.status = 200
     })
 
-    request(app.callback())
-      .get('/')
-      .expect(403)
-      .end(done())
+    const res = await request(app.callback()).get('/')
+    expect(res.status).toBe(403)
+    expect(res.text).toBe('Forbidden!!!')
+  })
+
+  it('blacklist handler passthrough', async () => {
+    const app = new Koa()
+    app.use((ctx, next) => {
+      ctx.request.ip = '192.168.0.1'
+      return next()
+    })
+    app.use(ip({
+      blacklist: ['192.168.0.[1-9]'],
+      handler: async (ctx, next) => {
+        return next()
+      }
+    }))
+    app.use((ctx, next) => {
+      ctx.status = 401
+      ctx.body = 'Please login!!!'
+    })
+
+    const res = await request(app.callback()).get('/')
+    expect(res.status).toBe(401)
+    expect(res.text).toBe('Please login!!!')
   })
 })
