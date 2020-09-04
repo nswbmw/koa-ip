@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "Ip filter middleware for koa, support `whitelist` and `blacklist`.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest"
   },
