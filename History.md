@@ -1,3 +1,9 @@
+## 2.1.0/2020-09-04
+
+- use `request-ip`
+- update dependencies
+- add TypeScript definition
+
 ## 2.0.0/2018-12-21
 
 - merge #1 #2 #6

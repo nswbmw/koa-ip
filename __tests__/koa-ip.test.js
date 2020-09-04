@@ -146,4 +146,22 @@ describe('koa-ip', () => {
     expect(res.status).toBe(401)
     expect(res.text).toBe('Please login!!!')
   })
+
+  it('use request-ip', async () => {
+    const app = new Koa()
+    app.use((ctx, next) => {
+      // rewrite scoket.remoteAddress
+      Object.defineProperty(ctx.req.socket, 'remoteAddress', {
+        value: null
+      })
+      ctx.req.headers['x-forwarded-for'] = '1.1.1.1'
+      return next()
+    })
+    app.use(ip(/^1.1.1.*$/))
+    app.use((ctx, next) => {
+      ctx.status = 200
+    })
+
+    await request(app.callback()).get('/').expect(200)
+  })
 })

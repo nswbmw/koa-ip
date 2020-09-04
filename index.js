@@ -1,5 +1,6 @@
 const assert = require('assert')
 const isPlainObject = require('lodash.isplainobject')
+const requestIp = require('request-ip')
 const debug = require('debug')('koa-ip')
 
 module.exports = function (opts) {
@@ -9,7 +10,7 @@ module.exports = function (opts) {
   }
 
   return async function koaIp (ctx, next) {
-    const ip = ctx.ip
+    const ip = ctx.ip || requestIp.getClientIp(ctx.req)
     let pass = true
 
     if (opts.whitelist && Array.isArray(opts.whitelist)) {
