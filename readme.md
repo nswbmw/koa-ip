@@ -8,8 +8,6 @@
 
 ```sh
 $ npm i koa-ip --save
-or 
-$ yarn add koa-ip
 ```
 
 ### Usage
@@ -20,7 +18,7 @@ ip(Array{String|RegExp})
 ip({
   whitelist: Array{String|RegExp},
   blacklist: Array{String|RegExp},
-  handler: async (ctx, next) => {}// handle blacklist ip
+  handler: async (ctx, next) => {} // handle blacklist ip
 })
 ```
 
@@ -32,8 +30,8 @@ const ip = require('koa-ip')
 
 const app = new Koa()
 
-app.use(ip('192.168.0.*'))// whitelist
-// app.use(ip(['192.168.0.*', '8.8.8.[0-3]']))// whitelist
+app.use(ip('192.168.0.*')) // whitelist
+// app.use(ip(['192.168.0.*', '8.8.8.[0-3]'])) // whitelist
 // app.use(ip({
 //   whitelist: ['192.168.0.*', '8.8.8.[0-3]'],
 //   blacklist: ['144.144.*']
@@ -72,8 +70,6 @@ More examples see [test](./__tests__/).
 
 ```sh
 $ npm test (coverage 100%)
-or
-$ yarn test (coverage 100%)
 ```
 
 ### License
