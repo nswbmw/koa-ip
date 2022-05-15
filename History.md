@@ -1,3 +1,8 @@
+## 2.1.2/2022-05-15
+
+- update deps
+- update readme
+
 ## 2.1.1/2022-02-24
 
 - update deps
