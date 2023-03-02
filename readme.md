@@ -4,20 +4,6 @@
 
 > koa-ip is a ip filter middleware for koa, support `whitelist` and `blacklist`.
 
-### What is [Trafficfilter.io](https://trafficfilter.io/pr?id=5DIGC5GKCF&source=koa-ip)?
-
-Trafficfilter.io is a fast, simple, Base-on IP address Invalid Traffic Filtration and IP-Geo Service.
-
-Trafficfilter.io can easily integrating your websites, applications,company's tools .
-
-Scenarios:
-
-- Evaluation of traffic sources
-- Filtering non-real traffic
-- Blocking spiders and malicious traffic visits
-
-(In most cases, trafficfilter.io is more accurate than most "Cloak" tools)
-
 ### Install
 
 ```sh
