@@ -1,12 +1,12 @@
 import { Middleware, Context, Next } from 'koa';
 
 declare namespace koaIP {
-    type IPPatternsType = String | RegExp
+    type IPPatternsType = string | RegExp
 
     interface koaIPOptionsObject {
         whitelist?: Array<IPPatternsType>,
         blacklist?: Array<IPPatternsType>,
-        handler?: (ctx: Context, next: Next) => any
+        handler?: (ctx: Context, next: Next) => void | Promise<void>
     }
 
     type KoaIPOptions = koaIPOptionsObject | Array<IPPatternsType> | IPPatternsType
